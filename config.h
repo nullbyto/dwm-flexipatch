@@ -1,5 +1,8 @@
 /* See LICENSE file for copyright and license details. */
 
+// Multimedia keys definitions
+#include <X11/XF86keysym.h>
+
 /* appearance */
 #if ROUNDED_CORNERS_PATCH
 static const unsigned int borderpx       = 0;   /* border pixel of windows */
@@ -885,6 +888,15 @@ static const char *lockcmd[]  = { "betterlockscreen", "-l", "dimblur", "||", "i3
 static const char *filescmd[]  = { "thunar", NULL };
 static const char *screensnipcmd[]  = { "flameshot", "gui", NULL };
 static const char *screenshotcmd[]  = { "flameshot", "screen", "--path", "~/Pictures/Screenshots/", NULL };
+static const char *brightnessup[]  = { "brightnessctl", "set", "+5%", NULL };
+static const char *brightnessdown[]  = { "brightnessctl", "set", "5%-", NULL };
+//static const char *up_vol[]   = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "+5%",   NULL };
+//static const char *down_vol[] = { "pactl", "set-sink-volume", "@DEFAULT_SINK@", "-5%",   NULL };
+//static const char *mute_vol[] = { "pactl", "set-sink-mute",   "@DEFAULT_SINK@", "toggle", NULL };
+static const char *mute_mic[] = { "pactl", "set-source-mute",   "@DEFAULT_SOURCE@", "toggle", NULL };
+static const char *playpause[] = { "playerctl", "play-pause", NULL };
+static const char *nexttrack[] = { "playerctl", "next", NULL };
+static const char *prevtrack[] = { "playerctl", "previous", NULL };
 
 #if BAR_STATUSCMD_PATCH
 #if BAR_DWMBLOCKS_PATCH
@@ -923,6 +935,16 @@ static const Key keys[] = {
 	{ 0,                            XK_Print,      spawn,                  {.v = screenshotcmd } },
 	{ MODKEY|ShiftMask,             XK_s,          spawn,                  {.v = screensnipcmd } },
 	{ MODKEY|ShiftMask,             XK_x,          spawn,                  {.v = lockcmd } },
+	{ 0,                   XF86XK_MonBrightnessUp, spawn,                  {.v = brightnessup } },
+        { 0,                 XF86XK_MonBrightnessDown, spawn,                  {.v = brightnessdown } },
+	{ 0,                      XF86XK_AudioMicMute, spawn,                  {.v = mute_mic } },
+	{ 0,                         XF86XK_AudioMute, spawn,                  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle; kill -38 $(pidof dwmblocks)") },
+        { 0,                  XF86XK_AudioLowerVolume, spawn,                  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%; kill -38 $(pidof dwmblocks)") },
+        { 0,                  XF86XK_AudioRaiseVolume, spawn,                  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%; kill -38 $(pidof dwmblocks)") },
+        { 0,                         XF86XK_AudioPlay, spawn,                  {.v = playpause } },
+        { 0,                         XF86XK_AudioNext, spawn,                  {.v = nexttrack } },
+        { 0,                         XF86XK_AudioPrev, spawn,                  {.v = prevtrack } },
+
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },
