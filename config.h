@@ -167,7 +167,7 @@ static const char font[]                 = "monospace 10";
 #else
 static const char *fonts[]               = { "monospace:size=14" };
 #endif // BAR_PANGO_PATCH
-static const char dmenufont[]            = "monospace:size=10";
+static const char dmenufont[]            = "monospace:size=14";
 
 static char c000000[]                    = "#000000"; // placeholder value
 
@@ -880,10 +880,25 @@ static const char *dmenucmd[] = {
 	#endif // BAR_DMENUMATCHTOP_PATCH
 	NULL
 };
+static const char *powercmd[] = {
+	".scripts/dmenu-power-menu",
+	#if !NODMENU_PATCH
+	"-m", dmenumon,
+	#endif // NODMENU_PATCH
+	"-fn", dmenufont,
+	"-nb", normbgcolor,
+	"-nf", normfgcolor,
+	"-sb", selbgcolor,
+	"-sf", selfgcolor,
+	#if BAR_DMENUMATCHTOP_PATCH
+	topbar ? NULL : "-b",
+	#endif // BAR_DMENUMATCHTOP_PATCH
+	NULL
+};
 
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *roficmd[]  = { "rofi", "-modi", "drun,run", "-show", "drun", NULL };
-static const char *powercmd[] = { "rofi", "-theme", "~/.config/rofi/configPower.rasi", "-show", "power-menu", "-modi", "power-menu:~/.scripts/rofi-power-menu", NULL };
+//static const char *powercmd[] = { "rofi", "-theme", "~/.config/rofi/configPower.rasi", "-show", "power-menu", "-modi", "power-menu:~/.scripts/rofi-power-menu", NULL };
 static const char *lockcmd[]  = { "betterlockscreen", "-l", "dimblur", "||", "i3lock", "||", "xlock", NULL };
 static const char *filescmd[]  = { "thunar", NULL };
 static const char *screensnipcmd[]  = { "flameshot", "gui", NULL };
